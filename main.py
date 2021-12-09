@@ -48,3 +48,13 @@ def check_for_person(img):
 
     numbers = find_arithmetic_text(img)
     return calculation(numbers)
+
+
+def find_dialog_window(img):
+
+    img[0:360, 0:1920] = (0, 0, 0)
+    img[715:1080, 0:1920] = (0, 0, 0)
+    img[0:1080, 0:650] = (0, 0, 0)
+    img[0:1080, 1280:1920] = (0, 0, 0)
+    #TODO сделать расчет в зависимости от разрещения (пока только 1080:1920)
+    return img
