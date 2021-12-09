@@ -1,5 +1,7 @@
 import cv2 as cv
 import numpy as np
+import pytesseract
+import re
 
 
 def find_coord_donate_seeds(img):
@@ -26,3 +28,23 @@ def find_coord_donate_seeds(img):
     cx = int(M['m10']) / M['m00']
     cy = int(M['m01']) / M['m00']
     return cx, cy
+
+
+def check_for_person(img):
+    def find_arithmetic_text(img):
+        img_rgb = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
+        text = pytesseract.image_to_string(img_rgb, lang='rus')
+        regex = re.compile(r'Сколько будет (\d+) \+ (\d+)?')
+        result = regex.search(text)
+        print(result)
+        first_number = result.group(1)
+        second_number = result.group(2)
+        return (first_number, second_number)
+
+    def calculation(numbers):
+        answer = int(numbers[0]) + int(numbers[1])
+        return answer
+
+    numbers = find_arithmetic_text(img)
+    return calculation(numbers)
