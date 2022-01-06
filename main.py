@@ -3,6 +3,7 @@ import screenshot
 import logic
 import engine
 import config
+import win32con
 
 
 class Bot:
@@ -12,9 +13,10 @@ class Bot:
         self._hwnd = None
         self.city = ()
         self.seeds = ()
+        self.count_seeds = 0
 
     def run(self):
-        self.city, self.seeds = self._configure()
+        self.city, self.seeds, self.count_seeds = self._configure()
         self._activate_window()
         screen = screenshot.Screenshot(self.name_window)
         while True:
@@ -29,9 +31,15 @@ class Bot:
             engine.click_mouse(cx, cy)
             cx, cy = config.COORD_STEP['change']
             engine.click_mouse(cx, cy)
-
-
-
+            cx, cy = config.COORD_STEP['choose_city']
+            engine.click_mouse(cx, cy)
+            cx, cy = self.city
+            engine.click_mouse(cx, cy)
+            cx, cy = config.COORD_STEP['count_seeds']
+            engine.click_mouse(cx, cy)
+            engine.work_keyboard(self.count_seeds)
+            cx, cy = config.COORD_STEP['sell']
+            engine.click_mouse(cx, cy)
 
     @staticmethod
     def _configure():
@@ -40,6 +48,7 @@ class Bot:
     def _activate_window(self):
         self._hwnd = win32gui.FindWindow(self.name_window)
         win32gui.SetForegroundWindow(self._hwnd)
+        win32gui.ShowWindow(self._hwnd, win32con.SW_SHOW)
 
 
 if __name__ == '__main__':
