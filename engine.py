@@ -4,7 +4,9 @@ import time
 
 
 def begin_dialog(name):
-    pass
+    pyautogui.write(name)
+    time.sleep(0.1)
+    pyautogui.write(name)
 
 
 def click_mouse(cx, cy, fast=True):
